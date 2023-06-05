@@ -1,5 +1,6 @@
 import React from 'react';
 import ProductCard from '../ProductCard'; // asegúrate de importar el componente ProductCard
+import './index.css'
 
 const PRODUCTS = [
     {
@@ -66,7 +67,7 @@ const PRODUCTS = [
 
 const ProductList = () => {
   return (
-    <div>
+    <div className='product-container'>
       {PRODUCTS.map(product => (
         <ProductCard 
           key={product.id}
