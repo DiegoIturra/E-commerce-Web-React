@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from "styled-components";
-import {ButtonStyle} from "@/components/Button";
+import {ButtonStyle} from "../components/Button";
 
 const StyledLink = styled(Link)`
   ${ButtonStyle}

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import Button from "@/components/Button";
-import CartIcon from "@/components/icons/CartIcon";
+import Button from "./Button";
+import Bars from "./icons/Bars";
 import { Link } from 'react-router-dom';
 import {useContext} from "react";
-import {CartContext} from "@/components/CartContext";
+import {CartContext} from "./CartContext";
 
 const ProductWrapper = styled.div`
   

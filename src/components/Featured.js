@@ -1,10 +1,10 @@
-import Center from "@/components/Center";
+import Center from "../components/Center";
 import styled from "styled-components";
-import Button from "@/components/Button";
-import ButtonLink from "@/components/ButtonLink";
-import CartIcon from "@/components/icons/CartIcon";
+import Button from "../components/Button";
+import ButtonLink from "../components/ButtonLink";
+import Bars from "../components/icons/Bars";
 import {useContext} from "react";
-import {CartContext} from "@/components/CartContext";
+import {CartContext} from "../components/CartContext";
 
 const Bg = styled.div`
   background-color: #222;
@@ -72,7 +72,7 @@ export default function Featured({product}) {
               <ButtonsWrapper>
                 <ButtonLink href={'/product/'+product._id} outline={1} white={1}>Read more</ButtonLink>
                 <Button white onClick={addFeaturedToCart}>
-                  <CartIcon />
+                  <Bars />
                   Add to cart
                 </Button>
               </ButtonsWrapper>

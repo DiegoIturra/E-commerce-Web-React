@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Center from "@/components/Center";
+import Center from "./Center";
 import {useContext, useState} from "react";
-import {CartContext} from "@/components/CartContext";
-import BarsIcon from "@/components/icons/Bars";
+import {CartContext} from "./CartContext";
+import BarsIcon from "./icons/Bars";
 
 const StyledHeader = styled.header`
   background-color: #222;
