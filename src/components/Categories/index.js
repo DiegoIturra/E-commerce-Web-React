@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+/*import React, { useEffect, useState } from 'react'
 import FeatureCard from '../FeatureCard'
 
 const Categories = () => {
@@ -17,6 +17,26 @@ const Categories = () => {
 
   return (
       <FeatureCard cards={categories}/>
+  )
+}
+*/
+
+import React, { useEffect, useState } from 'react'
+import FeatureCard from '../FeatureCard'
+
+const Categories = () => {
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    // Hardcodear las categorías
+    const hardcodedCategories = ['Computación', 'Celulares', 'Tecnología']
+    setCategories(hardcodedCategories)
+  }, [])
+
+  if (categories.length === 0) return <div>Loading.....</div>
+
+  return (
+    <FeatureCard cards={categories} />
   )
 }
 
