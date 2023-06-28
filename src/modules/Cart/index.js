@@ -44,23 +44,33 @@ const Cart = () => {
     return quantities.join(' ');
   };
 
+  const concatenateIds = (array) => {
+    const ids = array.map((item) => item.id);
+    return ids.join(' ');
+  }
+
   const sendCartToBackend = async () => {
     const user_id = 10; //Asociado al usuario en BD
     const product_quantities = concatenateQuantities(carts)
+    const product_ids = concatenateIds(carts)
+    const total_price = parseInt(total);
 
-    const hashOriginalIdToBackendId = {
-      1: 3
+    const body = {
+      user_id,
+      total_price,
+      product_ids,
+      product_quantities
     }
 
-    const currentIdMnonitor = 1
-    const backendId = hashOriginalIdToBackendId[currentIdMnonitor]
+    try {
+      const response = await axios.post('http://localhost:3001/carts', body)
 
-    const product_ids = ""
+      console.log(response.data)
 
-    //Generar el string de cantidades
-  
-
-
+      return response.data
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const createPreference = async () => {
