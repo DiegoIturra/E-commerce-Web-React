@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+import axios from 'axios';
 
 const Cart = () => {
+  initMercadoPago('TEST-87ffd860-e8c5-4c96-ae36-72650e1f1d7c');
+  const [preferenceId, setPreferenceId] = useState(null);
+
   const navigate = useNavigate()
   const [total, setTotal] = useState(0)
-  const carts = JSON.parse(localStorage.getItem('cart')) || []
+  let carts = JSON.parse(localStorage.getItem('cart')) || []
 
   useEffect(() => {
     const total = carts.reduce((acc, item) => {
       return acc + (item.price * item.quantity)
     }, 0)
-    setTotal(total)
+    setTotal(parseInt(total))
   }, [carts])
 
   const handleInc = (id) => {
@@ -27,9 +32,76 @@ const Cart = () => {
     navigate('/cart')
   }
 
+  const parsePriceOfProducts = () => {
+    return carts.map((cart) => ({
+      ...cart,
+      price: parseInt(cart.price)
+    }));
+  }
+
+  const concatenateQuantities = (array) => {
+    const quantities = array.map((item) => item.quantity);
+    return quantities.join(' ');
+  };
+
+  const concatenateIds = (array) => {
+    const ids = array.map((item) => item.id);
+    return ids.join(' ');
+  }
+
+  const sendCartToBackend = async () => {
+    const user_id = 10; //Asociado al usuario en BD
+    const product_quantities = concatenateQuantities(carts)
+    const product_ids = concatenateIds(carts)
+    const total_price = parseInt(total);
+
+    const body = {
+      user_id,
+      total_price,
+      product_ids,
+      product_quantities
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3001/carts', body)
+
+      console.log(response.data)
+
+      return response.data
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const createPreference = async () => {
+    carts = parsePriceOfProducts()
+
+    console.log(carts);
+  
+    try {
+      const response = await axios.post('http://localhost:3001/mercado_pago/create_preferences', 
+        carts
+      );
+
+      const { id } = response.data;
+      return id;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleBuy = async () => {
+    const id = await createPreference()
+    if(id){
+      setPreferenceId(id)
+      await sendCartToBackend(carts);
+    }
+  }
+
   const handleDec = (id) => {
     const updatedCart = carts.map(item => {
       if(item.id === id) {
+        console.log(item);
         return {
           ...item,
           quantity: item.quantity - 1
@@ -125,7 +197,8 @@ const Cart = () => {
               <span>Total cost</span>
               <span>${(total + 10).toFixed(2)}</span>
             </div>
-            <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+            <button onClick={handleBuy} className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId }}/>}
           </div>
         </div>
 
