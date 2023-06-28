@@ -11,7 +11,7 @@ import Cart from './modules/Cart';
 
 function App() {
   return (
-    <div>
+    <div className='bg-gray-800'>
       <Header/>
       <Routes>
         <Route path="/" element={<Home/>} />
